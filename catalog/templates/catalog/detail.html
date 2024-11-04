@@ -1,0 +1,294 @@
+{% extends "catalog/main.html" %} {% block content %} {% load static %}
+
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header text-white d-flex justify-content-between align-items-center">
+      <h1 class="h3 mb-0">
+        {{ trip.title }}  &nbsp;  | &nbsp;   
+        <small class="text-light" style="font-size: 1rem;">{{ trip.formattedAddress }}</small>
+      </h1>
+      <p class="mb-0">
+        <strong>Start Date:</strong> {{ trip.start_date }} &nbsp; | &nbsp;
+        <strong>End Date:</strong> {{ trip.end_date }}
+      </p>
+    </div>
+
+    
+
+        {% if trip.invite_set.exists and request.user == trip.user %}
+        <div class="card mb-4">
+          <div class="card-header text-white d-flex justify-content-between align-items-center">
+              <h2 class="h5 mb-0">Invites</h2>
+              <a href="{% url 'catalog:sendInvite' trip_id=trip.id username=user.username %}" class="btn bg-header-blue">Send Invite</a>
+          </div>
+          <div class="card-body">
+              {% if trip.invite_set.all %}
+                  {% for invite in trip.invite_set.all %}
+                  <div class="invite-status mb-3 p-2 border rounded d-flex justify-content-between align-items-center">
+                      <div>
+                          <p class="mb-1"><strong>Sent to:</strong> {{ invite.invited_user.username }}</p>
+                          <p class="mb-0">
+                              <strong>Status:</strong>
+                              {% if invite.approved %}
+                              <span class="text-success">Approved</span>
+                              {% elif invite.denied %}
+                              <span class="text-danger">Denied</span>
+                              {% else %}
+                              <span class="text-warning">Pending</span>
+                              {% endif %}
+                          </p>
+                      </div>
+                      <a href="{% url 'catalog:removeInvite' invite_id=invite.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to remove this invite?')">
+                          &times; Remove
+                      </a>
+                  </div>
+                  {% endfor %}
+              {% else %}
+                  <p>No invites have been sent for this trip.</p>
+              {% endif %}
+          </div>
+      </div>
+  
+      {% elif request.user == trip.user %}
+      <div class="card mb-4">
+        <div class="card-header text-white d-flex justify-content-between align-items-center">
+          <h2 class="h5 mb-0">Invites</h2>
+          <a href="{% url 'catalog:sendInvite' trip_id=trip.id username=user.username %}" class="btn bg-header-blue">Send Invite</a>
+        </div>
+        <div class="card-body text-center">
+          <p class="text-muted mb-0">No invites have been sent for this trip.</p>
+        </div>
+      </div>
+      {% endif %}
+
+    {% if messages %}
+    <div class="alert alert-danger" role="alert">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    
+<!-- Stops Section -->
+<div class="card-body">
+  <div class="card-header text-white d-flex justify-content-between align-items-center">
+    <h2 class="h3 mb-0">Stops</h2>
+    <a href="{% url 'catalog:addStop' trip_id=trip.id %}" class="btn bg-header-blue">Add New Stop</a>
+  </div>
+  <div class="gallery-container">
+    {% for stop in stop_page_obj %}
+    <div class="gallery-item d-flex flex-column">
+      <!-- Stop Thumbnail -->
+      <div class="gallery-item-top">
+        {% with img_path='catalog/images/'|add:stop.type_of_stop|add:'/'|add:stop.type_of_stop|add:'.jpg' %}
+        <img src="{% static img_path %}" alt="{{ stop.title }}" class="gallery-thumbnail" onerror="this.onerror=null;this.src='{% static 'catalog/images/default.jpg' %}';" />
+        {% endwith %}
+      </div>
+      <!-- Stop Details -->
+      <div class="gallery-item-middle text-center my-2">
+        <div class="gallery-title">{{ stop.title }}</div>
+        <br />
+      </div>
+      <div class="card-text mb-3">
+        <p><strong>Date and Time:</strong> {{ stop.date}} {{ stop.time }}</p>
+        <p><strong>Type:</strong> {{ stop.get_type_of_stop_display }}</p>
+      </div>
+      <!-- Stop Actions -->
+      <div class="gallery-item-bottom d-flex justify-content-between">
+        <a href="{% url 'catalog:stopDetail' trip_id=trip.id stop_id=stop.id %}" class="btn btn-outline-primary btn-sm">Details</a>
+        <a href="{% url 'catalog:removeStop' stop.id %}" class="btn btn-outline-danger btn-sm" style="width: 30px; height: 30px; padding: 0; line-height: 1" onclick="return confirm('Are you sure you want to delete this?')">&times;</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Pagination for Stops -->
+  <div class="pagination mt-4">
+    <nav aria-label="Stops pagination">
+      <ul class="pagination justify-content-center">
+        {% if stop_page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?stop_page={{ stop_page_obj.previous_page_number }}&transport_page={{ transport_page_obj.number }}&lodging_page={{ lodging_page_obj.number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        {% if stop_page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?stop_page={{ stop_page_obj.next_page_number }}&transport_page={{ transport_page_obj.number }}&lodging_page={{ lodging_page_obj.number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<!-- Transport Section -->
+<div class="card-body">
+  <div class="card-header text-white d-flex justify-content-between align-items-center">
+    <h2 class="h3 mb-0">Transport</h2>
+    <a href="{% url 'catalog:addTransport' trip_id=trip.id %}" class="btn bg-header-blue">Add New Transport</a>
+  </div>
+  <div class="gallery-container">
+    {% for transport in transport_page_obj %}
+    <div class="gallery-item d-flex flex-column">
+      <!-- Transport Thumbnail -->
+      <div class="gallery-item-top">
+        {% with img_path='catalog/images/'|add:transport.type_of_transport|add:'/'|add:transport.type_of_transport|add:'.jpg' %}
+        <img src="{% static img_path %}" alt="{{ transport.title }}" class="gallery-thumbnail" onerror="this.onerror=null;this.src='{% static 'catalog/images/default.jpg' %}';" />
+        {% endwith %}
+      </div>
+      <!-- Transport Details -->
+      <div class="gallery-item-middle text-center my-2">
+        <div class="gallery-title">{{ transport.title }}</div>
+        <br />
+      </div>
+      <div class="card-text mb-3">
+        <p><strong>Date and Time:</strong> {{ transport.date }} {{ transport.time }}</p>
+        <p><strong>Type:</strong> {{ transport.get_type_of_transport_display }}</p>
+      </div>
+      <!-- Transport Actions -->
+      <div class="gallery-item-bottom d-flex justify-content-between">
+        <a href="{% url 'catalog:transportDetail' trip_id=trip.id transport_id=transport.id %}" class="btn btn-outline-primary btn-sm">Details</a>
+        <a href="{% url 'catalog:removeTransport' transport.id %}" class="btn btn-outline-danger btn-sm" style="width: 30px; height: 30px; padding: 0; line-height: 1" onclick="return confirm('Are you sure you want to delete this?')">&times;</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Pagination for Transport -->
+  <div class="pagination mt-4">
+    <nav aria-label="Transport pagination">
+      <ul class="pagination justify-content-center">
+        {% if transport_page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?transport_page={{ transport_page_obj.previous_page_number }}&stop_page={{ stop_page_obj.number }}&lodging_page={{ lodging_page_obj.number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        {% if transport_page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?transport_page={{ transport_page_obj.next_page_number }}&stop_page={{ stop_page_obj.number }}&lodging_page={{ lodging_page_obj.number }}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<div class="card-body">
+  <div class="card-header text-white d-flex justify-content-between align-items-center">
+    <h2 class="h3 mb-0">Lodging</h2>
+    <a href="{% url 'catalog:addLodging' trip_id=trip.id %}" class="btn bg-header-blue">Add New Lodging</a>
+  </div>
+  <div class="gallery-container">
+    {% for lodging in lodging_page_obj %}
+    <div class="gallery-item d-flex flex-column">
+      <!-- Lodging Thumbnail -->
+      <div class="gallery-item-top">
+        <img src="{% static 'catalog/images/hotel.jpg' %}" alt="{{ lodging.title }}" class="gallery-thumbnail" onerror="this.onerror=null;this.src='{% static 'catalog/images/default.jpg' %}';" />
+      </div>
+      <!-- Lodging Details -->
+      <div class="gallery-item-middle text-center my-2">
+        <div class="gallery-title">{{ lodging.title }}</div>
+        <br />
+      </div>
+      <div class="card-text mb-3">
+        <p><strong>Check-In Date and Time:</strong> {{ lodging.start_date }} {{ lodging.start_time }}</p>
+        <p><strong>Check-Out Date and Time:</strong> {{ lodging.end_date }} {{ lodging.end_time }}</p>
+      </div>
+      <!-- Lodging Actions -->
+      <div class="gallery-item-bottom d-flex justify-content-between">
+        <a href="{% url 'catalog:lodgingDetail' trip_id=trip.id lodging_id=lodging.id %}" class="btn btn-outline-primary btn-sm">Details</a>
+        <a href="{% url 'catalog:removeLodging' lodging.id %}" class="btn btn-outline-danger btn-sm" style="width: 30px; height: 30px; padding: 0; line-height: 1" onclick="return confirm('Are you sure you want to delete this?')">&times;</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Pagination for Lodging -->
+  <div class="pagination mt-4">
+    <nav aria-label="Lodging pagination">
+      <ul class="pagination justify-content-center">
+        {% if lodging_page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?lodging_page={{ lodging_page_obj.previous_page_number }}&stop_page={{stop_page_obj.number}}&transport_page={{transport_page_obj.number}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        {% endif %}
+        {% if lodging_page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?lodging_page={{ lodging_page_obj.next_page_number }}&stop_page={{stop_page_obj.number}}&transport_page={{transport_page_obj.number}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+
+
+<div class="container mt-5 map" id="map_0"></div>
+<br />
+
+<script>
+  let marker_list=[];
+    {% for stop in trip.stop_set.all%}
+    marker_list.push([{{stop.ltd}}, {{stop.lng}}, {% autoescape off %}"{{stop.title}}"
+    {% endautoescape %}, "stop"]);
+    {% endfor %}
+    {% for lodging in trip.lodging_set.all%}
+    marker_list.push([{{lodging.ltd}}, {{lodging.lng}}, {% autoescape off %}"{{lodging.title}}"
+    {% endautoescape %}, "lodging"]);
+    {% endfor %}
+    {% for transport in trip.transport_set.all%}
+    marker_list.push([{{transport.ltd}}, {{transport.lng}}, {% autoescape off %}"{{transport.title}}"
+    {% endautoescape %}, "transport"]);
+    {% endfor %}
+  initMap(marker_list, "map_0", true, false, false, {ltd: {{trip.ltd}}, lng: {{trip.lng}}});
+</script>
+
+{%endblock%}

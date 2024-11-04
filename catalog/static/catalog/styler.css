@@ -1,0 +1,342 @@
+/* General Styles */
+
+
+
+/*body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+    background: white url("images/howls_moving_castle.jpg") no-repeat;
+    background-size: cover;
+}*/
+
+body {
+    background: white url("images/howls_moving_castle.jpg") no-repeat center center;
+    background-size: 100% auto; 
+    background-attachment: fixed; 
+}
+
+
+
+
+/* Container Styles */
+.container {
+    margin-top: 50px;
+}
+
+/* Card Styles */
+.card {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffffa5;
+}
+
+
+/* Card Header Styles */
+.card-header {
+    background-color: #407cbd;
+    color: #ffffff;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+/* Card Body Styles */
+.card-body {
+    padding: 15px;
+}
+
+/* Form Group Styles */
+
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+/* Button Styles */
+.btn {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+/* Alert Styles */
+.alert {
+    border: 1px solid #ffc107;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* Gallery Styles */
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 576px) {
+    .card-header {
+        font-size: 1.25rem;
+    }
+
+    .list-group-item {
+        font-size: 0.875rem;
+        padding: 10px;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    font-size: 0.875rem;
+    /* Smaller font size */
+    line-height: 1.5;
+    padding: 10px 0;
+    /* Reduce padding */
+    background-color: #343a40;
+    /* Dark background */
+    color: #ffffff;
+    /* White text */
+}
+
+.footer .container {
+    max-width: 720px;
+    /* Narrower container */
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.footer p,
+.footer small {
+    margin-bottom: 0.5rem;
+}
+
+.footer a {
+    color: #ffffff;
+}
+
+.footer a:hover {
+    color: #ddd;
+}
+
+.footer .fab {
+    font-size: 1rem;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+}
+
+.min-vh-100 {
+    min-height: 100vh !important;
+}
+
+.flex-fill {
+    flex: 1 1 auto !important;
+}
+
+.button-group a {
+    margin-left: 5px;
+}
+
+.button-group a:first-child {
+    margin-left: 0;
+}
+
+.btn-square {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-custom {
+    background-color: #407cbd;
+    /* Custom background color */
+    color: #ffffff;
+    /* White text */
+    border: none;
+}
+
+.btn-custom:hover {
+    background-color: #407cbd;
+    /* Darker shade for hover effect */
+}
+
+
+.bg-transport-blue {
+    background-color: #407cbd;
+    /* Lighter blue shade */
+    color: #ffffff;
+    /* White text */
+    padding: 10px;
+    border-radius: 5px;
+    /* Optional: for rounded corners */
+}
+
+.bg-header-blue {
+    background-color: #A1C9FA;
+    /* Lighter blue shade */
+    color: #ffffff;
+    /* White text */
+    padding: 3px;
+    border-radius: 5px;
+    /* Optional: for rounded corners */
+}
+
+
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+.map {
+    height: 400px;
+    /* The height is 400 pixels */
+    width: 100%;
+    /* The width is the width of the web page */
+    border: 2px solid black;
+    /* 2px solid border, change the color and size as needed */
+    padding: 10px;
+    /* Optional: Adds some space inside the border */
+}
+
+
+
+
+
+.gallery-title {
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.gallery-item {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f966;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Ensures content fits within the rounded borders */
+}
+
+.gallery-item-top {
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 10px;
+}
+
+.gallery-item-top img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    /* This ensures the image covers the container without distortion */
+    border-radius: 5px;
+    /* Optional: Adds rounded corners */
+}
+
+.gallery-thumbnail {
+    width: 100%;
+    height: 150px;
+    /*max-height: 150px;*/
+    object-fit: cover;
+    /* Ensures the image covers the space nicely */
+    border-bottom: 1px solid #ddd;
+}
+
+
+.gallery-item-bottom {
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+    gap: 10px;
+    /* Adjust gap as needed */
+    align-items: center;
+    /* Ensures the bottom section takes up remaining space */
+}
+
+.gallery-link {
+    text-decoration: none;
+    color: inherit;
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.gallery-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.gallery-actions .btn {
+    margin-left: 5px;
+}
+
+:root {
+    --stop-color: #FFD700;
+    /* Golden Yellow */
+    --transport-color: #1E90FF;
+    /* Dodger Blue */
+    --lodging-color: #32CD32;
+    /* Lime Green */
+    --text-color: #ffffff;
+    /* White */
+}
+
+#place-autocomplete-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin: 10px;
+    padding: 5px;
+    font-family: Roboto, sans-serif;
+    font-size: large;
+    font-weight: bold;
+}
+  
+gmp-place-autocomplete {
+    width: 300px;
+}

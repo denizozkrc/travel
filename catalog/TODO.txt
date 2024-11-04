@@ -1,0 +1,34 @@
+stopların tarihi trip sırasında
+Saat ve tarih widgetları
+
+
+Calender view
+custom markerlara route çizilsin
+add new stopta site path görünsün(veya headerda)
+lütfen istediğiniz locationı clickleyin uyarısı, loc girmezse(addstopta) -> message
+
+
+
+
+
+DONE
+Start-End date validation
+Get location from map
+haritada search
+Add/Update new stop/T/L haritaları toparlandı
+Update/Add pagelerde cancel butonu kondu
+Update yerine detail butonu kondu
+Detail pagede update butonu var
+Stop, T ve L notes ekle (nullable blankable), not varsa detaillarında görünsün
+trip page'e dönen kısayol
+header ve footer kaldır
+pagination
+trip eklerken şehir ekleme (haritaya gerek yok, sadece search box autocomplete places) 
+add bias towards trip.location to search google
+google maps link -> detaylı tarif için
+Locationlarda isimleri de çek
+
+Perm_request modeli tanımla, request edince oluşsun, onaylanınca bir field true olsun. 
+True olunca permissionları ver.
+Paylaşılan tripler için ayrı bir sayfa yaz
+

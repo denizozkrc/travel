@@ -1,0 +1,32 @@
+{% extends "catalog/main.html" %}
+
+{% block content %}
+
+{% load static %}
+
+<header class="center-content">
+    <h1>Upload File to {{category}}</h1>
+</header>
+
+<main class="center-content">
+    <form method="post" action="{% url 'catalog:addFile' id=id username=username category=category %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Render the entire form using form.as_p for basic layout -->
+        {{ form.as_p }}
+
+        <div class="form-group align-items-center mb-3">
+            <button type="submit" class="btn btn-primary mr-2">Upload File</button>
+        </div>
+    </form>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</main>
+
+{% endblock %}

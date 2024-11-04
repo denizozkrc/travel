@@ -1,0 +1,79 @@
+{% extends "catalog/main.html" %}
+{% block content %}
+{% load static %}
+
+{% if pending_invites.exists %}
+    <div class="card mb-4">
+        <div class="card-header text-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">Pending Invites</h2>
+        </div>
+        <div class="card-body">
+            {% for invite in pending_invites %}
+            {% if not invite.approved and not invite.denied %}
+            <div class="invite-status mb-3 p-2 border rounded d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-1"><strong>From:</strong> {{ invite.user.username }}</p>
+                    <p class="mb-1"><strong>Trip:</strong> {{ invite.trip.title }}</p>
+                    <p class="mb-0">
+                        <strong>Status:</strong>
+                        <span class="text-warning">Pending</span>
+                    </p>
+                </div>
+                <div>
+                    <a href="{% url 'catalog:acceptInvite' invite_id=invite.id %}" class="btn btn-outline-success btn-sm">Approve</a>
+                    <a href="{% url 'catalog:rejectInvite' invite_id=invite.id %}" class="btn btn-outline-danger btn-sm">Deny</a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="card mb-4">
+        <div class="card-header text-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">Pending Invites</h2>
+        </div>
+        <div class="card-body text-center">
+            <p class="text-muted mb-0">You have no pending invites.</p>
+        </div>
+    </div>
+{% endif %}
+
+{% if pending_invites.exists %}
+    <div class="card mb-4">
+        <div class="card-header text-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">Accepted Invites</h2>
+        </div>
+        <div class="card-body">
+            {% for invite in pending_invites %}
+            {% if invite.approved %}
+            <div class="invite-status mb-3 p-2 border rounded d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="mb-1"><strong>From:</strong> {{ invite.user.username }}</p>
+                    <p class="mb-1"><strong>Trip:</strong> {{ invite.trip.title }}</p>
+                    <p class="mb-0">
+                        <strong>Status:</strong>
+                        <span class="text-success">Approved</span>
+                    </p>
+                </div>
+                <div>
+                    <a href="{% url 'catalog:rejectInvite' invite_id=invite.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Are you sure you want to remove this invite?')">
+                        &times; Remove
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}
